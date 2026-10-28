@@ -1,27 +1,268 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
 import { Icon } from '../components/Icons.jsx'
+import backImg from '../../../img/backimg.png'
+import './Dashboard.css'
 
-const copy = {
-  mr: { hello: 'नमस्कार! 👋', prompt: 'आज तुमच्या पिकांसाठी काय मदत करू?', hint: 'पानाचा फोटो घ्या किंवा AI ला तुमचा प्रश्न विचारा.', scan: 'पान स्कॅन करा', scanSub: 'पानाचा फोटो घेऊन रोग तपासा', talk: 'AI शी बोला', talkSub: 'तुमच्या शेतीसंबंधी प्रश्न विचारा', recent: 'अलीकडील कृती', all: 'सर्व पहा', empty: 'तुमच्या कृती येथे दिसतील', emptySub: 'तुम्ही केलेले पान स्कॅन आणि AI संभाषणे येथे जतन होतील.' },
-  hi: { hello: 'नमस्ते! 👋', prompt: 'आज आपकी फसल के लिए क्या मदद करूँ?', hint: 'पत्ते की तस्वीर लें या AI से सवाल पूछें।', scan: 'पत्ता स्कैन करें', scanSub: 'पत्ते की तस्वीर से रोग पहचानें', talk: 'AI से बात करें', talkSub: 'खेती से जुड़े सवाल पूछें', recent: 'हाल की गतिविधि', all: 'सभी देखें', empty: 'आपकी गतिविधियाँ यहाँ दिखेंगी', emptySub: 'आपके पत्ता स्कैन और AI बातचीत यहाँ सहेजे जाएँगे।' },
-  en: { hello: 'Hello! 👋', prompt: 'How can I help your crops today?', hint: 'Take a leaf photo or ask the AI a question.', scan: 'Scan a leaf', scanSub: 'Check for disease with a leaf photo', talk: 'Talk to AI', talkSub: 'Ask a question about your farm', recent: 'Recent activity', all: 'See all', empty: 'Your activity will appear here', emptySub: 'Your leaf scans and AI conversations will be saved here.' },
+const navigation = [
+  { label: 'Home', to: '/', icon: 'home', end: true },
+  { label: 'Voice Assistant', to: '/assistant', icon: 'mic' },
+  { label: 'Image Detection', to: '/scan', icon: 'scan' },
+  { label: 'Disease Advisory', to: '/guidance', icon: 'leaf' },
+  { label: 'Weather & Risk', to: '/weather', icon: 'weather' },
+  { label: 'History', to: '/history', icon: 'history' },
+  { label: 'Settings', to: '/settings', icon: 'settings' },
+]
+
+const translations = {
+  en: {
+    welcome: 'Welcome to ShetiMitra AI',
+    subtitle: 'Your AI-Powered Crop Health Companion',
+    tags: 'Detect • Diagnose • Get Expert Advice • In Your Language',
+  },
+  hi: {
+    welcome: 'शेतीमित्र AI में आपका स्वागत है',
+    subtitle: 'फसल स्वास्थ्य के लिए आपका AI साथी',
+    tags: 'पहचानें • निदान करें • विशेषज्ञ सलाह • अपनी भाषा में',
+  },
+  mr: {
+    welcome: 'शेतीमित्र AI मध्ये तुमचे स्वागत आहे',
+    subtitle: 'पीक आरोग्यासाठी तुमचा AI साथी',
+    tags: 'ओळखा • निदान करा • तज्ञांचा सल्ला • तुमच्या भाषेत',
+  },
 }
 
-function Landscape() {
-  return <svg className="welcome-art" viewBox="0 0 420 190" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="sky" x2="0" y2="1"><stop stopColor="#f9e6bf"/><stop offset="1" stopColor="#dce8c9"/></linearGradient><linearGradient id="field" x2="0" y2="1"><stop stopColor="#9fbd61"/><stop offset="1" stopColor="#2c6840"/></linearGradient></defs><rect width="420" height="190" fill="url(#sky)"/><circle cx="342" cy="52" r="25" fill="#f5c76c" opacity=".72"/><path d="M0 105 68 70l46 22 62-43 72 50 53-39 119 49v81H0Z" fill="#a6b789"/><path d="m0 119 77-34 59 29 68-46 78 46 54-31 84 36v71H0Z" fill="#758d58"/><g fill="#54764b"><circle cx="285" cy="91" r="18"/><circle cx="302" cy="84" r="22"/><circle cx="319" cy="91" r="16"/><rect x="299" y="96" width="6" height="20"/><circle cx="374" cy="105" r="21"/><rect x="371" y="104" width="6" height="20"/></g><path d="M0 132q210-30 420 0v58H0Z" fill="url(#field)"/><g fill="none" stroke="#d4e18a" strokeWidth="3" opacity=".8"><path d="M210 190 282 130M260 190 305 130M310 190 330 130M360 190 354 130M410 190 380 130"/><path d="M0 150q210-24 420 0M0 170q210-24 420 0"/></g></svg>
-}
+const features = [
+  {
+    title: 'Detect Disease',
+    description: 'Upload a leaf image and let AI identify the disease.',
+    action: 'Upload Image',
+    icon: 'leaf',
+    tone: 'green',
+    to: '/scan',
+  },
+  {
+    title: 'Voice Assistant',
+    description: 'Ask questions or get advice in your language.',
+    action: 'Start Speaking',
+    icon: 'mic',
+    tone: 'purple',
+    to: '/assistant',
+  },
+  {
+    title: 'Weather & Risk',
+    description: 'Check weather and disease risk alerts.',
+    action: 'View Forecast',
+    icon: 'weather',
+    tone: 'orange',
+    to: '/weather',
+  },
+  {
+    title: 'Advisory',
+    description: 'Get expert guidance and safe recommendations.',
+    action: 'View Advice',
+    icon: 'sprout',
+    tone: 'teal',
+    to: '/guidance',
+  },
+]
 
-function ActionCard({ kind, to, icon, title, sub }) {
-  return <Link to={to} className={`action-card ${kind}`}><span className="action-icon"><Icon name={icon} size={31}/></span><span className="action-copy"><strong>{title}</strong><small>{sub}</small></span><span className="action-arrow"><Icon name="arrow" size={18}/></span>{kind === 'voice' && <span className="sound-wave" aria-hidden="true">▏▃▅▂▆▃▇▅▂▆▃▏</span>}{kind === 'scan' && <Icon name="leaf" size={57} className="card-leaf"/>}</Link>
-}
+const quickActions = [
+  { label: 'Capture Leaf Photo', icon: 'camera', to: '/scan' },
+  { label: 'Speak a Question', icon: 'mic', to: '/assistant' },
+  { label: 'Check Weather Risk', icon: 'weather', to: '/weather' },
+  { label: 'View My History', icon: 'history', to: '/history' },
+]
+
+const tips = [
+  {
+    title: 'Early Blight in Tomato',
+    detail: 'Spot early signs and protect your crop.',
+    image: 'photo-1592841200221-a6898f307baa',
+  },
+  {
+    title: 'High Humidity Alert',
+    detail: 'Check leaves regularly after rainfall.',
+    image: 'photo-1518837695005-2083093ee35b',
+  },
+  {
+    title: 'Cotton Leaf Curl Virus',
+    detail: 'Know what to look for in your field.',
+    image: 'photo-1595872018818-97555653a011',
+  },
+]
 
 export default function Dashboard() {
-  let language = 'mr'
-  try { language = localStorage.getItem('shetimitra-language') || 'mr' } catch { /* Use Marathi when storage is unavailable. */ }
-  const c = copy[language] || copy.mr
-  return <div className="farmer-dashboard">
-    <section className="welcome-banner"><Landscape/><div className="welcome-copy"><h1>{c.hello}</h1><h2>{c.prompt}</h2><p>{c.hint}</p></div></section>
-    <section className="action-grid" aria-label={c.prompt}><ActionCard kind="scan" to="/scan" icon="camera" title={c.scan} sub={c.scanSub}/><ActionCard kind="voice" to="/assistant" icon="mic" title={c.talk} sub={c.talkSub}/></section>
-    <section className="activity-section"><header className="activity-heading"><h2>{c.recent}</h2><Link to="/history">{c.all} <span>→</span></Link></header><div className="activity-empty"><span className="empty-leaf"><Icon name="leaf" size={23}/></span><div><strong>{c.empty}</strong><p>{c.emptySub}</p></div></div></section>
-  </div>
+  const [language, setLanguage] = useState('en')
+  const copy = translations[language]
+
+  return (
+    <div className="dashboard">
+      <aside className="dashboard-sidebar">
+        <Link to="/" className="dashboard-brand">
+          <span className="dashboard-brand-icon"><Icon name="leaf" size={25} /></span>
+          <span>
+            <strong>ShetiMitra AI</strong>
+            <small>Smart AI for Healthy Crops</small>
+          </span>
+        </Link>
+
+        <nav className="dashboard-navigation" aria-label="Main navigation">
+          {navigation.map(({ label, to, icon, end }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              className={({ isActive }) => `dashboard-nav-link${isActive ? ' active' : ''}`}
+            >
+              <Icon name={icon} size={20} />
+              <span>{label}</span>
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="sidebar-farmer">
+          <img
+            src={backImg}
+            alt="Farmer looking over a green field"
+          />
+          <p>“Better information today, healthier crops tomorrow”</p>
+        </div>
+      </aside>
+
+      <main className="dashboard-main">
+        <div className="dashboard-toolbar">
+          <label className="dashboard-language">
+            <Icon name="globe" size={18} />
+            <select
+              aria-label="Choose language"
+              value={language}
+              onChange={(event) => setLanguage(event.target.value)}
+            >
+              <option value="en">English</option>
+              <option value="hi">Hindi</option>
+              <option value="mr">Marathi</option>
+            </select>
+            <span aria-hidden="true">⌄</span>
+          </label>
+          <Link to="/settings" className="farmer-pill">
+            <span className="farmer-avatar"><Icon name="sprout" size={17} /></span>
+            Farmer
+          </Link>
+        </div>
+
+        <section
+          className="dashboard-hero"
+          style={{
+            backgroundImage: `url(${backImg})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          <div className="dashboard-hero-copy">
+            <span className="hero-eyebrow">YOUR FARM, HEALTHIER</span>
+            <h1>{copy.welcome}</h1>
+            <h2>{copy.subtitle}</h2>
+            <p>{copy.tags}</p>
+          </div>
+        </section>
+
+        <div className="dashboard-content-grid">
+          <div className="dashboard-left-column">
+            <section className="feature-panel" aria-label="Farmer tools">
+              <div className="section-heading">
+                <div>
+                  <span className="section-eyebrow">GET STARTED</span>
+                  <h2>How can we help your farm?</h2>
+                </div>
+                <span className="heading-leaf"><Icon name="leaf" size={23} /></span>
+              </div>
+              <div className="feature-grid">
+                {features.map((feature) => (
+                  <article className={`feature-card ${feature.tone}`} key={feature.title}>
+                    <span className="feature-icon"><Icon name={feature.icon} size={25} /></span>
+                    <h3>{feature.title}</h3>
+                    <p>{feature.description}</p>
+                    <Link className="feature-action" to={feature.to}>
+                      {feature.action}<Icon name="arrow" size={16} />
+                    </Link>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section className="quick-actions-panel">
+              <div className="section-heading compact">
+                <div>
+                  <span className="section-eyebrow">ONE-TAP TOOLS</span>
+                  <h2>Quick Actions</h2>
+                </div>
+                <span className="quick-hint">Pick up where you need</span>
+              </div>
+              <div className="quick-actions-grid">
+                {quickActions.map((action) => (
+                  <Link className="quick-action" to={action.to} key={action.label}>
+                    <span className="quick-action-icon"><Icon name={action.icon} size={21} /></span>
+                    <span>{action.label}</span>
+                    <span className="quick-action-arrow"><Icon name="arrow" size={15} /></span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          </div>
+
+          <aside className="dashboard-right-column">
+            <section className="weather-panel">
+              <div className="weather-heading">
+                <div>
+                  <span className="section-eyebrow">LOCAL CONDITIONS</span>
+                  <h2><span className="location-pin">⌖</span> Pune, Maharashtra</h2>
+                </div>
+                <span className="weather-symbol"><Icon name="weather" size={29} /></span>
+              </div>
+              <div className="temperature-row">
+                <strong>28°</strong>
+                <span>Partly Cloudy</span>
+              </div>
+              <div className="weather-metrics">
+                <div><span>Humidity</span><strong>78%</strong></div>
+                <div><span>Rainfall</span><strong>12 mm</strong></div>
+                <div><span>Wind</span><strong>8 km/h</strong></div>
+              </div>
+              <div className="risk-alert">
+                <span className="risk-icon"><Icon name="info" size={17} /></span>
+                <span><strong>Moderate risk</strong><small>Early Blight · Tomato</small></span>
+                <Icon name="arrow" size={16} />
+              </div>
+            </section>
+
+            <section className="tips-panel">
+              <div className="section-heading compact">
+                <div>
+                  <span className="section-eyebrow">FROM OUR EXPERTS</span>
+                  <h2>Latest Tips</h2>
+                </div>
+                <Link to="/guidance" className="tips-see-all">See all</Link>
+              </div>
+              <div className="tips-list">
+                {tips.map((tip) => (
+                  <Link className="tip-item" to="/guidance" key={tip.title}>
+                    <img
+                      src={`https://images.unsplash.com/${tip.image}?w=160&h=120&fit=crop`}
+                      alt=""
+                    />
+                    <span className="tip-copy">
+                      <strong>{tip.title}</strong>
+                      <small>{tip.detail}</small>
+                    </span>
+                    <Icon name="arrow" size={16} />
+                  </Link>
+                ))}
+              </div>
+            </section>
+          </aside>
+        </div>
+      </main>
+    </div>
+  )
 }

@@ -9,7 +9,7 @@ import HistoryPage from './pages/HistoryPage.jsx'
 import WeatherPage from './pages/WeatherPage.jsx'
 import GuidancePage from './pages/GuidancePage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
-import AssistantPage from './pages/AssistantPage.jsx'
+import TapToSpeak from './pages/TapToSpeak.jsx'
 
 export default function App() {
   const [language, setLanguage] = useState(() => {
@@ -29,5 +29,5 @@ export default function App() {
     try { localStorage.setItem('shetimitra-language', nextLanguage) } catch { /* Optional preference storage. */ }
   }
 
-  return <TranslationContext.Provider value={t}><Routes><Route element={<AppLayout language={language} setLanguage={changeLanguage} />}><Route index element={<Dashboard />} /><Route path="scan" element={<ScanPage />} /><Route path="assistant" element={<AssistantPage language={language} />} /><Route path="history" element={<HistoryPage />} /><Route path="settings" element={<GuidancePage />} /><Route path="weather" element={<WeatherPage />} /><Route path="guidance" element={<GuidancePage />} /><Route path="*" element={<NotFoundPage />} /></Route></Routes></TranslationContext.Provider>
+  return <TranslationContext.Provider value={t}><Routes><Route element={<AppLayout language={language} setLanguage={changeLanguage} />}><Route index element={<Dashboard />} /><Route path="scan" element={<ScanPage />} /><Route path="assistant" element={<TapToSpeak />} /><Route path="history" element={<HistoryPage />} /><Route path="settings" element={<GuidancePage />} /><Route path="weather" element={<WeatherPage />} /><Route path="guidance" element={<GuidancePage />} /><Route path="*" element={<NotFoundPage />} /></Route></Routes></TranslationContext.Provider>
 }

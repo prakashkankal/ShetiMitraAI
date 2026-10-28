@@ -1,0 +1,39 @@
+.scan-page{ display:flex; min-height:100vh; font-family:'Segoe UI', Arial; background:#f8fdf8; }
+.scan-sidebar{ width:230px; background:#0a2e1f; color:white; padding:15px 10px; display:flex; flex-direction:column; }
+.scan-sidebar .logo{ font-weight:bold; } .scan-sidebar .logo p{ font-size:10px; opacity:0.6; margin:0; }
+.scan-sidebar nav{ margin-top:20px; } .scan-sidebar nav div{ padding:10px; border-radius:8px; margin:4px 0; font-size:13px; opacity:0.7; cursor:pointer; }
+.scan-sidebar nav div.active{ background:#1e4d32; opacity:1; }
+.sb-bottom-img{ margin-top:auto; background:url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=200&h=100&fit=crop') center/cover; height:80px; border-radius:8px; display:flex; align-items:flex-end; padding:8px; font-size:10px; }
+
+.scan-main{ flex:1; padding:15px; }
+.scan-banner{ background:linear-gradient(90deg, #f0fdf4, #fefce8); border-radius:16px; padding:20px; display:flex; justify-content:space-between; align-items:center; position:relative; overflow:hidden; height:120px; }
+.scan-banner small{ font-size:10px; color:#16a34a; letter-spacing:1px; font-weight:600; } .scan-banner h2{ margin:5px 0; color:#0a2e1f; font-size:20px; } .scan-banner p{ font-size:12px; color:#555; margin:0; max-width:400px; }
+.banner-leaf{ width:200px; height:120px; background:url('https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=300&h=200&fit=crop') center/cover; border-radius:12px; }
+.ai-badge{ position:absolute; right:15px; top:15px; background:white; padding:6px 10px; border-radius:10px; font-size:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+
+.scan-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; margin-top:15px; }
+.scan-card{ background:white; border-radius:16px; padding:15px; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+.scan-card h4{ font-size:14px; margin:0 0 10px; color:#0a2e1f; } .scan-card .desc{ font-size:11px; color:#666; margin-bottom:12px; }
+
+.upload-box{ border:1px dashed #bbf7d0; border-radius:12px; padding:20px; text-align:center; background:#f9fef9; }
+.upload-box .cloud{ font-size:30px; } .upload-box p{ font-size:12px; margin:10px 0; }
+.choose-btn{ background:#0a2e1f; color:white; padding:8px 16px; border-radius:20px; font-size:12px; cursor:pointer; display:inline-block; margin:10px 0; }
+.upload-box small{ font-size:9px; color:#888; display:block; margin-top:10px; }
+.or{ text-align:center; font-size:11px; color:#888; margin:12px 0; border-top:1px solid #eee; position:relative; }
+.or::before{ content:'OR'; background:white; padding:0 10px; position:relative; top:-8px; }
+.camera-btn{ width:100%; background:#f0fdf4; border:1px solid #dcfce7; padding:10px; border-radius:10px; cursor:pointer; font-size:12px; color:#0a2e1f; }
+.cam-hint{ font-size:10px; color:#888; text-align:center; display:block; margin-top:5px; }
+
+.preview-box{ position:relative; border-radius:12px; overflow:hidden; } .preview-box img{ width:100%; height:280px; object-fit:cover; border-radius:12px; } .preview-box .close{ position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.5); color:white; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:12px; }
+.file-name{ font-size:12px; margin:8px 0; } .file-name small{ color:#888; }
+.change-btn{ width:100%; background:#f0fdf4; border:1px solid #dcfce7; padding:8px; border-radius:10px; margin:8px 0; cursor:pointer; font-size:12px; }
+.detect-btn{ width:100%; background:#0a2e1f; color:white; border:none; padding:10px; border-radius:10px; cursor:pointer; font-size:13px; font-weight:600; }
+
+.result-top{ display:flex; gap:10px; background:#f0fdf4; padding:10px; border-radius:12px; align-items:center; }
+.result-top img{ width:50px; height:50px; border-radius:8px; object-fit:cover; } .result-top b{ display:block; font-size:14px; } .result-top small{ font-size:10px; color:#666; }
+.conf{ margin-left:auto; text-align:center; } .conf span{ background:#dcfce7; color:#166534; padding:4px 10px; border-radius:12px; font-weight:bold; font-size:12px; display:block; margin-top:4px; }
+.about, .actions{ margin-top:12px; } .about h5, .actions h5{ font-size:12px; margin:0 0 6px; color:#0a2e1f; } .about p, .actions p{ font-size:11px; color:#555; line-height:1.4; margin:4px 0; }
+.pro-tip{ background:#f0fdf4; border:1px solid #dcfce7; padding:10px; border-radius:10px; margin-top:12px; } .pro-tip h5{ font-size:11px; margin:0 0 4px; } .pro-tip p{ font-size:10px; color:#666; margin:0; }
+.no-result{ text-align:center; padding:40px 20px; color:#888; font-size:12px; }
+
+@media(max-width:1100px){ .scan-grid{ grid-template-columns:1fr; } .scan-page{ flex-direction:column; } .scan-sidebar{ width:100%; } }
