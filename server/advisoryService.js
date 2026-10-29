@@ -65,3 +65,4 @@ export function getAdvisory(text = '', language = 'en') {
 
   return UNCERTAIN[lang]
 }
+
