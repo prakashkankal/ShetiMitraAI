@@ -3,6 +3,7 @@ import authRoutes from './auth.routes.js'
 import detectionRoutes from './detections.routes.js'
 import cropRoutes from './crops.routes.js'
 import weatherRoutes from './weather.routes.js'
+import voiceRoutes from './voice.routes.js'
 
 const router = Router()
 
@@ -20,5 +21,6 @@ router.use('/auth', authRoutes)
 router.use('/detections', detectionRoutes)
 router.use('/crops', cropRoutes)
 router.use('/weather', weatherRoutes)
+router.use('/voice', voiceRoutes)
 
 export default router

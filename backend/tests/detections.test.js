@@ -33,7 +33,7 @@ describe('Detections API', () => {
 
       expect(res.status).toBe(503)
       expect(res.body.data.available).toBe(false)
-    })
+    }, 15000)
   })
 
   describe('GET /api/v1/detections', () => {

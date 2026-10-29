@@ -94,12 +94,6 @@ export async function apiGetMe() {
 
 // ── Detections ────────────────────────────────────────────────────────────────
 
-/**
- * Submit an image file for AI disease detection.
- * @param {File|Blob} imageFile
- * @param {string} cropType
- * @param {string} selectedLanguage
- */
 export async function apiCreateDetection(imageFile, cropType, selectedLanguage = 'en') {
   const form = new FormData()
   form.append('image', imageFile)
@@ -138,6 +132,23 @@ export async function apiGetCrop(id) {
 
 export async function apiGetWeather(location = 'Pune') {
   return api.get('/weather', { location })
+}
+
+// ── Voice Assistant Module ────────────────────────────────────────────────────
+
+export async function apiVoiceHealth() {
+  return api.get('/voice/health')
+}
+
+export async function apiVoiceChat(text, language = 'en') {
+  return api.post('/voice/chat', { text, language })
+}
+
+export async function apiVoiceUpload(audioBlob, language = 'en') {
+  const form = new FormData()
+  form.append('audio', audioBlob, 'recording.webm')
+  form.append('language', language)
+  return api.postFormData('/voice', form)
 }
 
 // ── Health ────────────────────────────────────────────────────────────────────
