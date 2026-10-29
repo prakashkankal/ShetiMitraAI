@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./ScanPage.css";
+import { useTranslation } from "../i18n.jsx";
 
 export default function ScanPage() {
+  const t = useTranslation();
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("https://images.unsplash.com/photo-1582284540020-8acbe03f4924?w=500&h=600&fit=crop");
   const [detecting, setDetecting] = useState(false);
@@ -27,90 +29,90 @@ export default function ScanPage() {
   return (
     <div className="scan-page">
       <aside className="scan-sidebar">
-        <div className="logo">🌿 ShetiMitra AI<p>Smart AI for Healthy Crops</p></div>
+        <div className="logo">🌿 ShetiMitra AI<p>{t("dashboardTagline")}</p></div>
         <nav>
-          <div>🏠 Home</div>
-          <div>🎤 Voice Assistant</div>
-          <div className="active">🔍 Image Detection</div>
-          <div>🌱 Disease Advisory</div>
-          <div>☁️ Weather & Risk</div>
-          <div>🕒 History</div>
-          <div>⚙️ Settings</div>
+          <div>🏠 {t("navHome")}</div>
+          <div>🎤 {t("navAssistant")}</div>
+          <div className="active">🔍 {t("navDetection")}</div>
+          <div>🌱 {t("navAdvisory")}</div>
+          <div>☁️ {t("navWeather")}</div>
+          <div>🕒 {t("navHistory")}</div>
+          <div>⚙️ {t("navSettings")}</div>
         </nav>
-        <div className="sb-bottom-img">Better information today, healthier crops tomorrow</div>
+        <div className="sb-bottom-img">{t("sidebarQuote")}</div>
       </aside>
 
       <main className="scan-main">
         <div className="scan-banner">
           <div>
-            <small>PLANT DISEASE DETECTION</small>
-            <h2>Detect Disease from Leaf Image</h2>
-            <p>Upload a leaf image and let AI identify the disease and provide expert guidance.</p>
+            <small>{t("scanEyebrow")}</small>
+            <h2>{t("scanHeadline")}</h2>
+            <p>{t("scanDescription")}</p>
           </div>
           <div className="banner-leaf"></div>
-          <div className="ai-badge">🤖 AI Powered<br/><span>Accurate & Fast</span></div>
+          <div className="ai-badge">🤖 {t("aiPowered")}<br/><span>{t("accurateFast")}</span></div>
         </div>
 
         <div className="scan-grid">
           <div className="scan-card">
-            <h4>🍃 Upload Leaf Image</h4>
-            <p className="desc">Upload a clear image of the plant leaf for disease detection.</p>
+            <h4>🍃 {t("uploadLeaf")}</h4>
+            <p className="desc">{t("uploadDescription")}</p>
             <div className="upload-box">
               <div className="cloud">☁️⬆️</div>
-              <p>Drag & drop image here<br/>or</p>
+              <p>{t("dragDrop")}<br/>{t("or")}</p>
               <label className="choose-btn">
-                🖼️ Choose Image
+                🖼️ {t("chooseImage")}
                 <input type="file" accept="image/*" onChange={handleFile} hidden />
               </label>
-              <small>Supported formats: JPG, PNG, JPEG<br/>Max size: 5 MB</small>
+              <small>{t("supportedFormats")}<br/>{t("maxSize")}</small>
             </div>
-            <div className="or">OR</div>
-            <button className="camera-btn">📷 Open Camera</button>
-            <small className="cam-hint">Click to take a photo</small>
+            <div className="or">{t("or")}</div>
+            <button className="camera-btn">📷 {t("openCamera")}</button>
+            <small className="cam-hint">{t("cameraHint")}</small>
           </div>
 
           <div className="scan-card">
-            <h4>🖼️ Image Preview</h4>
+            <h4>🖼️ {t("imagePreview")}</h4>
             <div className="preview-box">
-              <img src={preview} alt="leaf" />
+              <img src={preview} alt={t("leafImageAlt")} />
               <span className="close">✕</span>
             </div>
             <p className="file-name">leaf_disease.jpg<br/><small>(2.4 MB)</small></p>
-            <button className="change-btn" onClick={()=>setImage(null)}>🔄 Change Image</button>
-            <button className="detect-btn" onClick={detect}>{detecting ? "Detecting..." : "✨ Detect Disease"}</button>
+            <button className="change-btn" onClick={()=>setImage(null)}>🔄 {t("changeImage")}</button>
+            <button className="detect-btn" onClick={detect}>{detecting ? t("detecting") : `✨ ${t("detectDisease")}`}</button>
           </div>
 
           <div className="scan-card result">
-            <h4>🍃 Detection Result</h4>
+            <h4>🍃 {t("detectionResult")}</h4>
             {result ? (
               <>
                 <div className="result-top">
-                  <img src={preview} alt="thumb" />
+                  <img src={preview} alt={t("leafThumbnailAlt")} />
                   <div>
-                    <small>Disease Detected</small>
+                    <small>{t("diseaseDetected")}</small>
                     <b>Early Blight</b>
                     <small><i>(Alternaria solani)</i></small>
                   </div>
-                  <div className="conf"><small>Confidence</small><span>92%</span></div>
+                  <div className="conf"><small>{t("confidence")}</small><span>92%</span></div>
                 </div>
                 <div className="about">
-                  <h5>ⓘ About the Disease</h5>
-                  <p>Early blight is a fungal disease that affects tomato, potato and other crops. It appears as dark brown spots with concentric rings on older leaves, and can spread to stems and fruits if not managed.</p>
+                  <h5>ⓘ {t("aboutDisease")}</h5>
+                  <p>{t("diseaseDescription")}</p>
                 </div>
                 <div className="actions">
-                  <h5>✅ Recommended Actions</h5>
-                  <p>✓ Remove and destroy infected leaves.</p>
-                  <p>✓ Use fungicide (e.g., Mancozeb or Chlorothalonil).</p>
-                  <p>✓ Ensure proper spacing and air circulation.</p>
-                  <p>✓ Avoid overhead watering.</p>
+                  <h5>✅ {t("recommendedActions")}</h5>
+                  <p>✓ {t("removeLeaves")}</p>
+                  <p>✓ {t("applyFungicide")}</p>
+                  <p>✓ {t("spacingAir")}</p>
+                  <p>✓ {t("avoidWatering")}</p>
                 </div>
                 <div className="pro-tip">
-                  <h5>💡 Pro Tip</h5>
-                  <p>Early detection helps prevent the spread of disease and saves your crop yield.</p>
+                  <h5>💡 {t("proTip")}</h5>
+                  <p>{t("proTipCopy")}</p>
                 </div>
               </>
             ) : (
-              <div className="no-result">Upload image and click Detect Disease to see result</div>
+              <div className="no-result">{t("uploadToSeeResult")}</div>
             )}
           </div>
         </div>
@@ -118,4 +120,3 @@ export default function ScanPage() {
     </div>
   );
 }
-

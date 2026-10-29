@@ -1,33 +1,36 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Icon } from '../components/Icons.jsx'
+import LanguageSwitcher from '../components/LanguageSwitcher.jsx'
+import { useTranslation } from '../i18n.jsx'
 import './TapToSpeak.css'
 
 const navigation = [
-  { label: 'Home', to: '/', icon: 'home', end: true },
-  { label: 'Voice Assistant', to: '/assistant', icon: 'mic' },
-  { label: 'Image Detection', to: '/scan', icon: 'scan' },
-  { label: 'Disease Advisory', to: '/guidance', icon: 'leaf' },
-  { label: 'Weather & Risk', to: '/weather', icon: 'weather' },
-  { label: 'History', to: '/history', icon: 'history' },
-  { label: 'Settings', to: '/settings', icon: 'settings' },
+  { label: 'navHome', to: '/', icon: 'home', end: true },
+  { label: 'navAssistant', to: '/assistant', icon: 'mic' },
+  { label: 'navDetection', to: '/scan', icon: 'scan' },
+  { label: 'navAdvisory', to: '/guidance', icon: 'leaf' },
+  { label: 'navWeather', to: '/weather', icon: 'weather' },
+  { label: 'navHistory', to: '/history', icon: 'history' },
+  { label: 'navSettings', to: '/settings', icon: 'settings' },
 ]
-
 function Waveform({ className = '' }) {
+  const t = useTranslation()
   return (
-    <span className={`tts-waveform ${className}`} aria-label="Audio waveform">
+    <span className={`tts-waveform ${className}`} aria-label={t('audioWaveform')}>
       {Array.from({ length: 11 }, (_, index) => <span key={index} style={{ '--bar': index }} />)}
     </span>
   )
 }
 
 function DiseasedLeafIllustration() {
+  const t = useTranslation()
   return (
     <svg
       className="tts-leaf-illustration"
       viewBox="0 0 420 230"
       role="img"
-      aria-label="Illustration of rice leaves with blast disease spots"
+      aria-label={t('riceIllustration')}
     >
       <defs>
         <linearGradient id="rice-leaf" x1="0" x2="1" y1="1" y2="0">
@@ -62,24 +65,26 @@ function DiseasedLeafIllustration() {
 }
 
 function ChatVoiceMessage() {
+  const t = useTranslation()
   return (
     <>
       <div className="tts-audio-player">
-        <button type="button" className="tts-play-button" aria-label="Play voice response">▶</button>
+        <button type="button" className="tts-play-button" aria-label={t('playVoice')}>▶</button>
         <Waveform />
         <span className="tts-audio-time">0:45</span>
       </div>
-      <p className="tts-advice-intro">तुमच्या तांदळाच्या पिकावरील पिवळ्या डागांसाठी:</p>
+      <p className="tts-advice-intro">{t('adviceIntro')}</p>
       <ol className="tts-advice-list">
-        <li>पानांवरील डाग ब्लास्ट रोगाची सुरुवातीची लक्षणे असू शकतात.</li>
-        <li>शेतात पाण्याचा निचरा ठेवा आणि पिकाची नियमित पाहणी करा.</li>
-        <li>जवळच्या कृषी अधिकाऱ्यांचा सल्ला घेऊन योग्य उपाय करा.</li>
+        <li>{t('adviceOne')}</li>
+        <li>{t('adviceTwo')}</li>
+        <li>{t('adviceThree')}</li>
       </ol>
     </>
   )
 }
 
 export default function TapToSpeak() {
+  const t = useTranslation()
   const [step, setStep] = useState(2)
   const [recording, setRecording] = useState(false)
   const [timer, setTimer] = useState(0)
@@ -118,9 +123,9 @@ export default function TapToSpeak() {
       <aside className="tts-sidebar">
         <Link to="/" className="tts-brand">
           <span className="tts-brand-icon"><Icon name="leaf" size={24} /></span>
-          <span><strong>ShetiMitra AI</strong><small>Smart AI for Healthy Crops</small></span>
+          <span><strong>ShetiMitra AI</strong><small>{t('dashboardTagline')}</small></span>
         </Link>
-        <nav className="tts-navigation" aria-label="Main navigation">
+        <nav className="tts-navigation" aria-label={t('menu')}>
           {navigation.map(({ label, to, icon, end }) => (
             <NavLink
               key={to}
@@ -129,20 +134,20 @@ export default function TapToSpeak() {
               className={({ isActive }) => `tts-nav-link${isActive ? ' active' : ''}`}
             >
               <Icon name={icon} size={20} />
-              <span>{label}</span>
+              <span>{t(label)}</span>
             </NavLink>
           ))}
         </nav>
-        <div className="tts-sidebar-note">Your farm, healthier every day.</div>
+        <div className="tts-sidebar-note">{t('sidebarQuote')}</div>
       </aside>
 
       <main className="tts-main">
         <header className="tts-page-header">
           <div>
-            <span className="tts-overline">YOUR FARM COMPANION</span>
-            <h1>Voice Assistant</h1>
+            <span className="tts-overline">{t('voiceEyebrow')}</span>
+            <h1>{t('voiceTitle')}</h1>
           </div>
-          <span className="tts-language-pill"><Icon name="globe" size={17} /> मराठी</span>
+          <LanguageSwitcher className="tts-language-pill" />
         </header>
 
         {step < 5 ? (
@@ -150,12 +155,12 @@ export default function TapToSpeak() {
             {step === 2 && (
               <div className="tts-idle-content">
                 <span className="tts-mic-halo">
-                  <button type="button" className="tts-mic-button" onClick={startRecording} aria-label="Tap to speak">
+                  <button type="button" className="tts-mic-button" onClick={startRecording} aria-label={t('tapToSpeak')}>
                     <Icon name="mic" size={37} />
                   </button>
                 </span>
-                <h2>Tap to speak</h2>
-                <p>Press the microphone button and speak your question.</p>
+                <h2>{t('tapToSpeak')}</h2>
+                <p>{t('speakQuestion')}</p>
               </div>
             )}
 
@@ -168,20 +173,20 @@ export default function TapToSpeak() {
                   </span>
                   <Waveform className="right" />
                 </div>
-                <h2>{step === 3 ? 'Recording started... Speak now' : 'Recording complete'}</h2>
+                <h2>{step === 3 ? t('recordingNow') : t('recordingComplete')}</h2>
                 <p className="tts-recording-timer">00:{String(timer).padStart(2, '0')}</p>
                 <div className="tts-recording-actions">
-                  {step === 4 && <button type="button" className="tts-send-button" onClick={sendRecording}>Send</button>}
-                  <button type="button" className="tts-cancel-button" onClick={cancelRecording}>Cancel</button>
+                  {step === 4 && <button type="button" className="tts-send-button" onClick={sendRecording}>{t('send')}</button>}
+                  <button type="button" className="tts-cancel-button" onClick={cancelRecording}>{t('cancel')}</button>
                 </div>
               </div>
             )}
           </section>
         ) : (
-          <section className="tts-chat" aria-label="Voice assistant conversation">
-            <div className="tts-chat-date">TODAY</div>
+          <section className="tts-chat" aria-label={t('voiceConversation')}>
+            <div className="tts-chat-date">{t('todayUpper')}</div>
             <div className="tts-chat-user">
-              <p>माझ्या तांदळाच्या पिकावर पिवळे डाग दिसत आहेत, काय करावे?</p>
+              <p>{t('sampleQuestion')}</p>
               <time>10:24 AM</time>
             </div>
 
@@ -196,8 +201,8 @@ export default function TapToSpeak() {
                 <div className="tts-image-card">
                   <DiseasedLeafIllustration />
                   <div className="tts-image-caption">
-                    <span className="tts-image-tag"><Icon name="camera" size={14} /> Image</span>
-                    <p>तांदळाच्या पिकातील ब्लास्ट रोगाचे लक्षण</p>
+                    <span className="tts-image-tag"><Icon name="camera" size={14} /> {t('imageTag')}</span>
+                    <p>{t('sampleImageCaption')}</p>
                   </div>
                 </div>
                 <time>10:25 AM</time>
@@ -207,12 +212,12 @@ export default function TapToSpeak() {
             <div className="tts-message-composer">
               <input
                 type="text"
-                placeholder="Type a message..."
-                aria-label="Type a message"
+                placeholder={t('typeMessage')}
+                aria-label={t('typeMessage')}
                 onClick={() => setStep(6)}
                 onFocus={() => setStep(6)}
               />
-              <button type="button" aria-label="Send message" onClick={() => setStep(6)}>
+              <button type="button" aria-label={t('sendMessage')} onClick={() => setStep(6)}>
                 <Icon name="arrow" size={19} />
               </button>
             </div>

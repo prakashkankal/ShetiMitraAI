@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import AppLayout from './components/AppLayout.jsx'
 import { translations } from './translations.js'
-import { TranslationContext } from './i18n.jsx'
+import { LanguageContext, TranslationContext } from './i18n.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import ScanPage from './pages/ScanPage.jsx'
 import HistoryPage from './pages/HistoryPage.jsx'
@@ -29,5 +29,22 @@ export default function App() {
     try { localStorage.setItem('shetimitra-language', nextLanguage) } catch { /* Optional preference storage. */ }
   }
 
-  return <TranslationContext.Provider value={t}><Routes><Route element={<AppLayout language={language} setLanguage={changeLanguage} />}><Route index element={<Dashboard />} /><Route path="scan" element={<ScanPage />} /><Route path="assistant" element={<TapToSpeak />} /><Route path="history" element={<HistoryPage />} /><Route path="settings" element={<GuidancePage />} /><Route path="weather" element={<WeatherPage />} /><Route path="guidance" element={<GuidancePage />} /><Route path="*" element={<NotFoundPage />} /></Route></Routes></TranslationContext.Provider>
+  return (
+    <LanguageContext.Provider value={{ language, setLanguage: changeLanguage }}>
+      <TranslationContext.Provider value={t}>
+        <Routes>
+          <Route element={<AppLayout language={language} setLanguage={changeLanguage} />}>
+            <Route index element={<Dashboard />} />
+            <Route path="scan" element={<ScanPage />} />
+            <Route path="assistant" element={<TapToSpeak />} />
+            <Route path="history" element={<HistoryPage />} />
+            <Route path="settings" element={<GuidancePage />} />
+            <Route path="weather" element={<WeatherPage />} />
+            <Route path="guidance" element={<GuidancePage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </TranslationContext.Provider>
+    </LanguageContext.Provider>
+  )
 }
