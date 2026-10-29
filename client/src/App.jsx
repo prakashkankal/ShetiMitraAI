@@ -1,15 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import AppLayout from './components/AppLayout.jsx'
 import { translations } from './translations.js'
 import { TranslationContext } from './i18n.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import ScanPage from './pages/ScanPage.jsx'
+import TapToSpeak from './pages/TapToSpeak.jsx'
 import HistoryPage from './pages/HistoryPage.jsx'
+import SettingsPage from './pages/SettingsPage.jsx'
 import WeatherPage from './pages/WeatherPage.jsx'
 import GuidancePage from './pages/GuidancePage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
-import TapToSpeak from './pages/TapToSpeak.jsx'
 
 export default function App() {
   const [language, setLanguage] = useState(() => {
@@ -21,13 +22,37 @@ export default function App() {
     }
   })
 
-  document.documentElement.lang = language
-  const t = (key) => translations[language][key] ?? translations.en[key] ?? key
+  useEffect(() => {
+    document.documentElement.lang = language
+  }, [language])
+
+  const t = (key) => translations[language]?.[key] ?? translations.en[key] ?? key
 
   const changeLanguage = (nextLanguage) => {
-    setLanguage(nextLanguage)
-    try { localStorage.setItem('shetimitra-language', nextLanguage) } catch { /* Optional preference storage. */ }
+    if (translations[nextLanguage]) {
+      setLanguage(nextLanguage)
+      try {
+        localStorage.setItem('shetimitra-language', nextLanguage)
+      } catch {
+        /* LocalStorage safe fallback */
+      }
+    }
   }
 
-  return <TranslationContext.Provider value={t}><Routes><Route element={<AppLayout language={language} setLanguage={changeLanguage} />}><Route index element={<Dashboard />} /><Route path="scan" element={<ScanPage />} /><Route path="assistant" element={<TapToSpeak />} /><Route path="history" element={<HistoryPage />} /><Route path="settings" element={<GuidancePage />} /><Route path="weather" element={<WeatherPage />} /><Route path="guidance" element={<GuidancePage />} /><Route path="*" element={<NotFoundPage />} /></Route></Routes></TranslationContext.Provider>
+  return (
+    <TranslationContext.Provider value={{ language, setLanguage: changeLanguage, t }}>
+      <Routes>
+        <Route element={<AppLayout language={language} setLanguage={changeLanguage} />}>
+          <Route index element={<Dashboard />} />
+          <Route path="scan" element={<ScanPage />} />
+          <Route path="assistant" element={<TapToSpeak />} />
+          <Route path="history" element={<HistoryPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+          <Route path="weather" element={<WeatherPage />} />
+          <Route path="guidance" element={<GuidancePage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
+    </TranslationContext.Provider>
+  )
 }
